@@ -19,7 +19,9 @@ link_directories(
     "/usr/local/lib"
 )
 
+
 add_definitions(-O3 -DSDL2 -march=armv6 -mfpu=vfp -mfloat-abi=hard -lwiringPi)
+
  
 # Location for Cannonball to create save files
 # Used to auto-generate setup.hpp with various file paths
