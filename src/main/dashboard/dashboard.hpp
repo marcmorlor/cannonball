@@ -1,8 +1,8 @@
 #ifndef _DASHBOARD_H_
 #define _DASHBOARD_H_
 
-// #include <stdint.h>
-// #include <wiringPiI2C.h>
+#include <stdint.h>
+#include <wiringPiI2C.h>
 
 #define ISSI_ADDR_DEFAULT 0x74
 

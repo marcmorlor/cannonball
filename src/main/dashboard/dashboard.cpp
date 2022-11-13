@@ -1,6 +1,6 @@
-// #include <stdint.h>
-// #include <wiringPi.h>
-// #include <wiringPiI2C.h>
+#include <stdint.h>
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
 #include "dashboard.hpp"
 
 // Store 7 seg number formats
