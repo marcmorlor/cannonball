@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <stdint.h>
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
+// #include <stdint.h>
+// #include <wiringPi.h>
+// #include <wiringPiI2C.h>
 
 #define DRV2605_ADDR 0x5A
 
