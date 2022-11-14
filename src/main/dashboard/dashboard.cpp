@@ -88,7 +88,7 @@ void Dashboard::clearSpeed(void) {
 
 /*************/
 
-void Dashboard::updateDashboard() {
+void Dashboard::updateDashboard(void) {
   uint16_t t1 = _fuel;
 
   if (_turbo) {

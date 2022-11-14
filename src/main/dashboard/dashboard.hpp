@@ -37,6 +37,8 @@ class Dashboard {
   uint8_t _fuel;
   bool _turbo;
   uint16_t _speed;
+
+  void Dashboard::updateDashboard(void);
 };
 
 extern Dashboard dashboard;
