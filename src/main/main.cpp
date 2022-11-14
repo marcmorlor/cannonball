@@ -336,7 +336,7 @@ int main(int argc, char* argv[])
         }
 
         // Init dashboard
-        char port[13] = "/dev/ttyACM0";
+        char port[13] = "/dev/ttyACM1";
         int baud = 115200;
 
         dashboard.init(port, baud);
