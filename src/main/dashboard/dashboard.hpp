@@ -38,7 +38,7 @@ class Dashboard {
   bool _turbo;
   uint16_t _speed;
 
-  void Dashboard::updateDashboard(void);
+  void updateDashboard(void);
 };
 
 extern Dashboard dashboard;
