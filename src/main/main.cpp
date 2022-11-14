@@ -336,7 +336,10 @@ int main(int argc, char* argv[])
         }
 
         // Init dashboard
-        dashboard.init("/dev/ttyACM0", 115200);
+        char port[13] = "/dev/ttyACM0";
+        uint8_t baud = 115200;
+        
+        dashboard.init(port, baud);
 
         // Populate menus
         menu->populate();
