@@ -16,7 +16,7 @@ Dashboard::Dashboard(void) {
 Dashboard::~Dashboard(void) {
 }
 
-bool Dashboard::init(char *device, unsigned int baud) {
+bool Dashboard::init(char *device, int baud) {
 
   _fd = serialOpen (device, baud);
 

@@ -15,7 +15,7 @@ class Dashboard {
   Dashboard(void);
   ~Dashboard(void);
 
-  bool init(char *device, unsigned int baud);
+  bool init(char *device, int baud);
   void clearAll(void);
 
   void updateTacho(uint8_t revs);

@@ -337,8 +337,8 @@ int main(int argc, char* argv[])
 
         // Init dashboard
         char port[13] = "/dev/ttyACM0";
-        uint8_t baud = 115200;
-        
+        int baud = 115200;
+
         dashboard.init(port, baud);
 
         // Populate menus
