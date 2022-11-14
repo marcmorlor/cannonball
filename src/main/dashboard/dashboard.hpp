@@ -2,9 +2,10 @@
 #define _DASHBOARD_H_
 
 #include <stdint.h>
-#include <iostream.h>
-#include <sstream.h>
 #include <wiringSerial.h>
+
+#include <iostream>
+#include <sstream>
 
 class Dashboard {
  public:

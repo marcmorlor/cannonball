@@ -1,8 +1,10 @@
 #include <stdint.h>
-#include <iostream.h>
-#include <sstream.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
+
+#include <iostream>
+#include <sstream>
+
 #include "dashboard.hpp"
 
 Dashboard dashboard;
