@@ -336,7 +336,7 @@ int main(int argc, char* argv[])
         }
 
         // Init dashboard
-        dashboard.init(0x74);
+        dashboard.init("/dev/ttyACM0", 115200);
 
         // Populate menus
         menu->populate();
