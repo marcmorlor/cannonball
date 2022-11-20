@@ -95,8 +95,8 @@ void Dashboard::update_dashboard(void) {
     t1 += 100;
   }
 
-  if (_revs > 0){
-    t1 += (_revs * 8);
+  if (_revs > 0) {
+    t1 += (_revs * 10);
   }
 
   std::ostringstream ss;
