@@ -22,7 +22,7 @@ Input::~Input(void)
 {
 }
 
-void Input::init(int pad_id, int* key_config, int* pad_config, int analog, int* axis, int* analog_settings)
+void Input::init(std::string pad_id, int* key_config, int* pad_config, int analog, int* axis, int* analog_settings)
 {
     this->key_config  = key_config;
     this->pad_config  = pad_config;
@@ -32,12 +32,26 @@ void Input::init(int pad_id, int* key_config, int* pad_config, int analog, int* 
     this->wheel_dead  = analog_settings[1];
     this->pedals_dead = analog_settings[2];
 
-    gamepad = SDL_NumJoysticks() > pad_id;
+    int num_joysticks = SDL_NumJoysticks() > pad_id;
 
-    if (gamepad)
+    int i;
+    for (i = 0; i < num_joysticks; ++i)
     {
-        stick = SDL_JoystickOpen(pad_id);
+        SDL_Joystick* js = SDL_JoystickOpen(i);
+        if (js)
+        {
+            SDL_JoystickGUID guid = SDL_JoystickGetGUID(js);
+            char guid_str[1024];
+            SDL_JoystickGetGUIDString(guid, guid_str, sizeof(guid_str));
+
+            if ( strcmp(pad_id.c_str(), guid_str) == 0 ) {
+                stick = js;
+                break;
+            }
+        }
     }
+
+    //if (!stick)
 
     a_wheel = CENTRE;
 }

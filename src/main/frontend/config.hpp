@@ -67,16 +67,16 @@ struct controls_settings_t
     const static int GEAR_AUTO     = 3;
 
     int gear;
-    int steer_speed;   // Steering Digital Speed
-    int pedal_speed;   // Pedal Digital Speed
-    int padconfig[8];  // Joypad Button Config
-    int keyconfig[12]; // Keyboard Button Config
-    int pad_id;        // Use the N'th joystick on the system.
-    int analog;        // Use analog controls
-    int axis[3];       // Analog Axis
-    int asettings[3];  // Analog Settings
+    int steer_speed;         // Steering Digital Speed
+    int pedal_speed;         // Pedal Digital Speed
+    int padconfig[8];        // Joypad Button Config
+    int keyconfig[12];       // Keyboard Button Config
+    std::string pad_id;      // The unique ID of the gamepad. See SDL_JoystickGetGUID.
+    int analog;              // Use analog controls
+    int axis[3];             // Analog Axis
+    int asettings[3];        // Analog Settings
 
-    int haptic;        // Force Feedback Enabled
+    int haptic;              // Force Feedback Enabled
     int max_force;
     int min_force;
     int force_duration;

@@ -130,7 +130,7 @@
     -->
     <gear>0</gear>
     
-    <!-- Use the N'th joystick on the system. -->
+    <!-- The unique ID of the gamepad. See SDL_JoystickGetGUID -->
     <pad_id>0</pad_id>
     
     <!-- Keyboard Button Configuration. Easiest to configure with inbuilt menu. -->

@@ -142,7 +142,7 @@ void Config::load(const std::string &filename)
     controls.padconfig[6]  = pt_config.get("controls.padconfig.menu",  5);
     controls.padconfig[7]  = pt_config.get("controls.padconfig.view",  6);
     controls.analog        = pt_config.get("controls.analog.<xmlattr>.enabled", 0);
-    controls.pad_id        = pt_config.get("controls.pad_id", 0);
+    controls.pad_id        = pt_config.get("controls.pad_id", "");
     controls.axis[0]       = pt_config.get("controls.analog.axis.wheel", 0);
     controls.axis[1]       = pt_config.get("controls.analog.axis.accel", 2);
     controls.axis[2]       = pt_config.get("controls.analog.axis.brake", 3);
