@@ -57,6 +57,10 @@ void Input::init(std::string pad_id, int* key_config, int* pad_config, int analo
                 stick = js;
                 break;
             }
+            else
+            {
+                SDL_JoystickClose(js);
+            }
         }
     }
 
