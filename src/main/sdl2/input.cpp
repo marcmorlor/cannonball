@@ -32,7 +32,7 @@ void Input::init(std::string pad_id, int* key_config, int* pad_config, int analo
     this->wheel_dead  = analog_settings[1];
     this->pedals_dead = analog_settings[2];
 
-    printf("Looking for Joystick with ID: %s\n", pad_id);
+    printf("Looking for Joystick with ID: %s\n", pad_id.c_str());
 
     int num_joysticks = SDL_NumJoysticks();
 
