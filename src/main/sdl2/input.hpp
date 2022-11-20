@@ -59,7 +59,7 @@ public:
     Input(void);
     ~Input(void);
 
-    void init(int, int*, int*, const int, int*, int*);
+    void init(std::string, int*, int*, const int, int*, int*);
     void close();
 
     void handle_key_up(SDL_Keysym*);
