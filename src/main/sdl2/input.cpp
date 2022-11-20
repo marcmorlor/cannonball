@@ -32,11 +32,17 @@ void Input::init(std::string pad_id, int* key_config, int* pad_config, int analo
     this->wheel_dead  = analog_settings[1];
     this->pedals_dead = analog_settings[2];
 
+    printf("Looking for Joystick with ID: %s\n", pad_id);
+
     int num_joysticks = SDL_NumJoysticks();
+
+    printf("Found %d joystick(s)\n", num_joysticks);
 
     int i;
     for (i = 0; i < num_joysticks; ++i)
     {
+        printf("Connecting to joystic %d\n", i);
+
         SDL_Joystick* js = SDL_JoystickOpen(i);
         if (js)
         {
@@ -44,7 +50,10 @@ void Input::init(std::string pad_id, int* key_config, int* pad_config, int analo
             char guid_str[1024];
             SDL_JoystickGetGUIDString(guid, guid_str, sizeof(guid_str));
 
+            printf("Checking joystick ID: %s\n", guid_str);
+
             if ( strcmp(pad_id.c_str(), guid_str) == 0 ) {
+                printf("Using joystick ID: %s\n", guid_str);
                 stick = js;
                 break;
             }
