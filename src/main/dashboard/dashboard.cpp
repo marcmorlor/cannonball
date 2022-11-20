@@ -102,8 +102,8 @@ void Dashboard::update_dashboard(void) {
   }
 
   std::ostringstream ss;
-  ss << std::setfill('0') << std::setw(2) << std::hex << (t + r + f);
-  ss << std::setfill('0') << std::setw(2) << std::hex << s;
+  ss << std::setfill('0') << std::setw(2) << std::hex << t1;
+  ss << std::setfill('0') << std::setw(2) << std::hex << _speed;
   ss << '\n';
   std::string msg = ss.str();
 
