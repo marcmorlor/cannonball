@@ -1,11 +1,14 @@
 #ifndef _DASHBOARD_H_
 #define _DASHBOARD_H_
 
-#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
 #include <wiringSerial.h>
 
 #include <iostream>
-#include <sstream>
+#include <sstream>	
+#include <iomanip>
 
 class Dashboard {
  public:
@@ -16,19 +19,21 @@ class Dashboard {
   ~Dashboard(void);
 
   bool init(char *device, int baud);
-  void clearAll(void);
+  void clear_all(void);
 
-  void updateTacho(uint8_t revs);
-  void clearTacho(void);
+  void update_tacho(uint8_t revs);
+  void clear_tacho(void);
 
-  void updateFuel(uint8_t level);
-  void clearFuel(void);
+  void update_fuel(uint8_t level);
+  void clear_fuel(void);
 
-  void updateTurbo(bool enabled);
-  void clearTurbo(void);
+  void update_turbo(bool enabled);
+  void clear_turbo(void);
 
-  void updateSpeed(uint16_t speed);
-  void clearSpeed(void);
+  void update_speed(uint16_t speed);
+  void clear_speed(void);
+
+  void update_dashboard(void);
 
  protected:
   int _fd;
@@ -38,7 +43,7 @@ class Dashboard {
   bool _turbo;
   uint16_t _speed;
 
-  void updateDashboard(void);
+  std::string _lastMsg;
 };
 
 extern Dashboard dashboard;

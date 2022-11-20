@@ -520,7 +520,7 @@ void Outrun::main_switch()
                 ohud.blit_text_new(9,  18, "CRASHES            - ");
                 ohud.blit_text_new(31, 18, Utils::to_string((int) ttrial.crashes).c_str(), OHud::GREEN);
             }
-            dashboard.clearAll();
+            dashboard.clear_all();
             osoundint.queue_sound(sound::NEW_COMMAND);
             game_state = GS_GAMEOVER;
 
@@ -616,6 +616,9 @@ void Outrun::main_switch()
 
     oinitengine.update_road();
     oinitengine.update_engine();
+
+    // [MPB]
+    dashboard.update_dashboard();
 
     // --------------------------------------------------------------------------------------------
     // Debugging Only

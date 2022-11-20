@@ -158,9 +158,9 @@ void OHud::draw_timer1(uint16_t time)
 
         if (time < 0x40){
             uint8_t fuel = (time >> 4) * 10 + (time & 15);
-            dashboard.updateFuel((fuel / 10) + 1);
+            dashboard.update_fuel((fuel / 10) + 1);
         } else {
-            dashboard.updateFuel(5);
+            dashboard.update_fuel(5);
         }
 
         //blit_text_new(0, 7, Utils::to_hex_string((int)time).c_str(), OHud::PINK);
@@ -171,7 +171,7 @@ void OHud::draw_timer1(uint16_t time)
     }
     else
     {
-        dashboard.clearFuel();
+        dashboard.clear_fuel();
         /*uint32_t dst_addr = translate(7, 1);
         const uint16_t PAL = 0x8AA0;
         const uint16_t O = (('O' - 0x41) * 2) + PAL; // Convert character to real index (D0-0x41) so A is 0x01
@@ -367,7 +367,7 @@ void OHud::draw_rev_counter()
     uint8_t revs2 = Utils::map(revs, 0, 15, 0, Dashboard::MAX_TACHO_REVS);
 
     // [MPB] Display revs on dashboard
-    dashboard.updateTacho(revs2);
+    dashboard.update_tacho(revs2);
     
     /*uint32_t addr = 0x110DB4; // Address of rev counter
         

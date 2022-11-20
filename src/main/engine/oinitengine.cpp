@@ -295,17 +295,17 @@ void OInitEngine::update_engine()
         mph -= mph % 5;
 
         // Update dashboard
-        dashboard.updateSpeed(mph);
+        dashboard.update_speed(mph);
 
         // Blit High/Low Gear
         //if (config.controls.gear == config.controls.GEAR_BUTTON && !config.cannonboard.enabled)
         //{
             if (oinputs.gear) {
                 //ohud.blit_text_new(9, 26, "H");
-                dashboard.updateTurbo(true);
+                dashboard.update_turbo(true);
             } else {
                 //ohud.blit_text_new(9, 26, "L");
-                dashboard.updateTurbo(false);
+                dashboard.update_turbo(false);
             }
         //}
 
