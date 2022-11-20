@@ -303,11 +303,11 @@ void OInitEngine::update_engine()
             if (oinputs.gear) {
                 //ohud.blit_text_new(9, 26, "H");
                 dashboard.update_turbo(true);
-                printf("HIGH\n");
+                // printf("HIGH\n");
             } else {
                 //ohud.blit_text_new(9, 26, "L");
                 dashboard.update_turbo(false);
-                printf("LOW\n");
+                // printf("LOW\n");
             }
         //}
 
