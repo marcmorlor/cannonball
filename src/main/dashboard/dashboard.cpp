@@ -27,8 +27,6 @@ bool Dashboard::init(char *device, int baud) {
   _revs = 0;
   _fuel = MAX_FUEL_LEVEL;
 
-  _lastMsg = 
-
   return true;
 }
 
