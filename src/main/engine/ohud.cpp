@@ -158,7 +158,7 @@ void OHud::draw_timer1(uint16_t time)
 
         if (time < 0x40){
             uint8_t fuel = (time >> 4) * 10 + (time & 15);
-            printf("Fuel: %d - %d", fuel, (fuel / 10) + 1)
+            printf("Fuel: %d - %d", fuel, (fuel / 10) + 1);
             dashboard.update_fuel((fuel / 10) + 1);
         } else {
             dashboard.update_fuel(5);
