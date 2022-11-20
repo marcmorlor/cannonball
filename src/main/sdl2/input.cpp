@@ -32,7 +32,7 @@ void Input::init(std::string pad_id, int* key_config, int* pad_config, int analo
     this->wheel_dead  = analog_settings[1];
     this->pedals_dead = analog_settings[2];
 
-    int num_joysticks = SDL_NumJoysticks() > pad_id;
+    int num_joysticks = SDL_NumJoysticks();
 
     int i;
     for (i = 0; i < num_joysticks; ++i)
