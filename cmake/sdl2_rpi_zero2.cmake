@@ -19,8 +19,8 @@ link_directories(
     "/usr/local/lib"
 )
 
-add_definitions(-O3 -DSDL2 -mcpu=cortex-a53 -mfpu=vfp -mfloat-abi=hard -lwiringPi)
-#add_definitions(-O3 -DSDL2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -lwiringPi)
+#add_definitions(-O3 -DSDL2 -mcpu=cortex-a53 -mfpu=vfp -mfloat-abi=hard -lwiringPi)
+add_definitions(-O3 -DSDL2 -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -lwiringPi)
  
 # Location for Cannonball to create save files
 # Used to auto-generate setup.hpp with various file paths
