@@ -17,7 +17,7 @@ link_libraries(cannonball
 )
 
 # Linking
-link_directories(
+link_directories( 
     "${sdl_root}/lib"
     "/usr/local/lib"
 )
