@@ -5,20 +5,25 @@ set(CMAKE_CXX_FLAGS "-I/opt/vc/include -L/opt/vc/lib")
 set(lib_base /usr/include)
 set(sdl_root ${lib_base}/SDL2)
 
-include_directories("${sdl_root}")
+include_directories(
+    "${sdl_root}"
+    "/usr/local/include"
+)
 
 link_libraries(cannonball 
     SDL2
     brcmGLESv2
+    wiringPi
 )
 
 # Linking
 link_directories(
     "${sdl_root}/lib"
+    "/usr/local/lib"
 )
 
-add_definitions(-O3 -DSDL2 -DWITH_OPENGLES -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp)
-#add_definitions(-O0 -ggdb -DSDL2 -DWITH_OPENGLES)
+add_definitions(-O3 -DSDL2 -DWITH_OPENGLES -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -lwiringPi)
+#add_definitions(-O0 -ggdb -DSDL2 -DWITH_OPENGLES -lwiringPi)
  
 # Location for Cannonball to create save files
 # Used to auto-generate setup.hpp with various file paths
