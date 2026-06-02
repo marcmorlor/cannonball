@@ -204,14 +204,17 @@ void Audio::tick()
     // Get the audio buffers we've just output
     int16_t *pcm_buffer = osoundint.pcm->get_buffer();
     int16_t *ym_buffer  = osoundint.ym->get_buffer();
-    int16_t *wav_buffer = wavfile.data;
-
     int samples_written = osoundint.pcm->buffer_size;
 
     // And mix them into the mix_buffer
+    SDL_LockAudio();
+    int16_t *wav_buffer = wavfile.data;
+    uint32_t wav_pos = wavfile.pos;
+    uint32_t wav_length = wavfile.length;
+
     for (int i = 0; i < samples_written; i++)
     {
-        int32_t mix_data = wav_buffer[wavfile.pos] + pcm_buffer[i] + ym_buffer[i];
+        int32_t mix_data = wav_buffer[wav_pos] + pcm_buffer[i] + ym_buffer[i];
 
         // Clip mix data
         if (mix_data >= (1 << 15))
@@ -222,9 +225,11 @@ void Audio::tick()
         mix_buffer[i] = mix_data;
 
         // Loop wav files
-        if (++wavfile.pos >= wavfile.length)
-            wavfile.pos = 0;
+        if (++wav_pos >= wav_length)
+            wav_pos = 0;
     }
+    wavfile.pos = wav_pos;
+    SDL_UnlockAudio();
 
     // Cast mix_buffer to a byte array, to align it with internal SDL format 
     uint8_t* mbuf8 = (uint8_t*) mix_buffer;
@@ -325,7 +330,10 @@ void Audio::load_wav(const char* filename)
 {
     if (sound_enabled)
     {
+        pause_audio();
+        SDL_LockAudio();
         clear_wav();
+        SDL_UnlockAudio();
 
         // Load Wav File
         SDL_AudioSpec wave;
@@ -333,21 +341,17 @@ void Audio::load_wav(const char* filename)
         uint8_t *data;
         uint32_t length;
 
-        pause_audio();
-
         if( SDL_LoadWAV(filename, &wave, &data, &length) == NULL)
         {
-            wavfile.loaded = 0;
             resume_audio();
             std::cout << "Could not load wav: " << filename << std::endl;
             return;
         }
         
-        SDL_LockAudio();
-
         // Halve Volume Of Wav File
         uint8_t* data_vol = new uint8_t[length];
-	SDL_MixAudioFormat(data_vol, data, wave.format, length, SDL_MIX_MAXVOLUME / 2);
+        SDL_memset(data_vol, 0, length);
+        SDL_MixAudioFormat(data_vol, data, wave.format, length, SDL_MIX_MAXVOLUME / 2);
 
         // WAV File Needs Conversion To Target Format
         if (wave.format != AUDIO_S16 || wave.channels != 2 || wave.freq != FREQ)
@@ -363,23 +367,26 @@ void Audio::load_wav(const char* filename)
             SDL_FreeWAV(data);
             delete[] data_vol;
 
+            SDL_LockAudio();
             wavfile.data = (int16_t*) cvt.buf;
             wavfile.length = cvt.len_cvt / 2;
             wavfile.pos = 0;
             wavfile.loaded = 1;
+            SDL_UnlockAudio();
         }
         // No Conversion Needed
         else
         {
             SDL_FreeWAV(data);
+            SDL_LockAudio();
             wavfile.data = (int16_t*) data_vol;
             wavfile.length = length / 2;
             wavfile.pos = 0;
             wavfile.loaded = 2;
+            SDL_UnlockAudio();
         }
 
         resume_audio();
-        SDL_UnlockAudio();
     }
 }
 
@@ -408,6 +415,7 @@ void Audio::clear_wav()
 
 void fill_audio(void *udata, Uint8 *stream, int len)
 {
+    const int stream_len = len;
     int gap;
     int newpos;
     int underflow_amount = 0;
@@ -417,35 +425,43 @@ void fill_audio(void *udata, Uint8 *stream, int len)
     gap = dsp_write_pos - dsp_read_pos;
     if (gap < len) 
     {
-        underflow_amount = len - gap;
-        len = gap;
+        len = gap > 0 ? gap : 0;
+        underflow_amount = stream_len - len;
     }
     newpos = dsp_read_pos + len;
 
-    // No Wrap
-    if (newpos/dsp_buffer_bytes == dsp_read_pos/dsp_buffer_bytes) 
+    if (len > 0)
     {
-        memcpy(stream, dsp_buffer + (dsp_read_pos%dsp_buffer_bytes), len);
-    }
-    // Wrap
-    else 
-    {
-        int first_part_size = dsp_buffer_bytes - (dsp_read_pos%dsp_buffer_bytes);
-        memcpy(stream,  dsp_buffer + (dsp_read_pos%dsp_buffer_bytes), first_part_size);
-        memcpy(stream + first_part_size, dsp_buffer, len - first_part_size);
+        // No Wrap
+        if (newpos/dsp_buffer_bytes == dsp_read_pos/dsp_buffer_bytes)
+        {
+            memcpy(stream, dsp_buffer + (dsp_read_pos%dsp_buffer_bytes), len);
+        }
+        // Wrap
+        else
+        {
+            int first_part_size = dsp_buffer_bytes - (dsp_read_pos%dsp_buffer_bytes);
+            if (first_part_size > len)
+                first_part_size = len;
+            memcpy(stream,  dsp_buffer + (dsp_read_pos%dsp_buffer_bytes), first_part_size);
+            if (len > first_part_size)
+                memcpy(stream + first_part_size, dsp_buffer, len - first_part_size);
+        }
     }
     // Save the last sample as we may need it to fill underflow
-    if (gap >= bytes_per_sample) 
+    if (len >= bytes_per_sample)
     {
         memcpy(last_bytes, stream + len - bytes_per_sample, bytes_per_sample);
     }
     // Just repeat the last good sample if underflow
     if (underflow_amount > 0 ) 
     {
-        int i;
-        for (i = 0; i < underflow_amount/bytes_per_sample; i++) 
+        for (int i = 0; i < underflow_amount; i += bytes_per_sample)
         {
-            memcpy(stream + len +i*bytes_per_sample, last_bytes, bytes_per_sample);
+            int copy_size = bytes_per_sample;
+            if (copy_size > underflow_amount - i)
+                copy_size = underflow_amount - i;
+            memcpy(stream + len + i, last_bytes, copy_size);
         }
     }
     dsp_read_pos = newpos;
