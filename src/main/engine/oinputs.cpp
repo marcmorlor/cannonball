@@ -79,8 +79,8 @@ void OInputs::tick(Packet* packet)
         if (!input.analog || !input.gamepad)
         {
             digital_steering();
-            // [MPB] digital_pedals();
-            gear_pedals(); // [MPB] 
+            digital_pedals();
+            //gear_pedals();
         }
         // Analog Controls
         else

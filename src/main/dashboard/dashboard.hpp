@@ -38,7 +38,7 @@
 class Dashboard {
  public:
   static const uint8_t MAX_TACHO_REVS = 8;
-  static const uint8_t MAX_FUEL_LEVEL = 5;
+  static const uint8_t MAX_FUEL_LEVEL = 8;
 
   Dashboard(void);
   ~Dashboard(void);
