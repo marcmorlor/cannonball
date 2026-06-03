@@ -46,8 +46,8 @@ bool Dashboard::init(uint8_t addr) {
   // Disable unused leds
   for(uint8_t f=0; f<8; f++){
     writeRegister8(f, 0x00, 0xFF); // Tacho
-    writeRegister8(f, 0x02, 0x1F); // Fuel
-    writeRegister8(f, 0x04, 0x01); // Turbo
+    writeRegister8(f, 0x02, 0xFF); // Fuel
+    writeRegister8(f, 0x04, 0x03); // Turbo
     writeRegister8(f, 0x06, 0xFF); // Speed 100s
     writeRegister8(f, 0x08, 0xFF); // Speed 10s
     writeRegister8(f, 0x0A, 0xFF); // Speed 1s
@@ -110,7 +110,7 @@ void Dashboard::updateFuel(uint8_t level) {
   if (level < 0) level = 0;
   if (level > MAX_FUEL_LEVEL) level = MAX_FUEL_LEVEL;
   
-  for(uint8_t x=0; x<5; x++){
+  for(uint8_t x=0; x<8; x++){
     if (x + 1 <= level){
       drawPixel(x, DASH_FUEL_Y, DASH_LED_PWM);
     } else {
@@ -129,9 +129,12 @@ void Dashboard::clearFuel(void) {
 void Dashboard::updateTurbo(bool enabled) {
   if (enabled){
     drawPixel(0, DASH_TURBO_Y, DASH_LED_PWM);
+    drawPixel(1, DASH_TURBO_Y, 0);
   } else {
     drawPixel(0, DASH_TURBO_Y, 0);
+    drawPixel(1, DASH_TURBO_Y, DASH_LED_PWM);
   }
+
   return;
 }
 

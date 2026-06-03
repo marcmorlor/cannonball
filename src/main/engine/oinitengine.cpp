@@ -295,7 +295,7 @@ void OInitEngine::update_engine()
         mph -= mph % 5;
 
         // Update dashboard
-        dashboard.updateSpeed(mph);
+        dashboard.updateSpeed(kph);
 
         // Blit High/Low Gear
         //if (config.controls.gear == config.controls.GEAR_BUTTON && !config.cannonboard.enabled)
