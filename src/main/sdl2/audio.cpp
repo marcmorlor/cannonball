@@ -207,7 +207,7 @@ void Audio::tick()
     int samples_written = osoundint.pcm->buffer_size;
 
     // And mix them into the mix_buffer
-    SDL_LockAudio();
+    SDL_LockAudioDevice(dev);
     int16_t *wav_buffer = wavfile.data;
     uint32_t wav_pos = wavfile.pos;
     uint32_t wav_length = wavfile.length;
@@ -229,7 +229,7 @@ void Audio::tick()
             wav_pos = 0;
     }
     wavfile.pos = wav_pos;
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(dev);
 
     // Cast mix_buffer to a byte array, to align it with internal SDL format 
     uint8_t* mbuf8 = (uint8_t*) mix_buffer;
@@ -238,7 +238,7 @@ void Audio::tick()
     bytes_per_ms = (bytes_per_sample) * (FREQ/1000.0);
     bytes_written = (BITS == 8 ? samples_written : samples_written*2);
     
-    SDL_LockAudio();
+    SDL_LockAudioDevice(dev);
 
     // this is the gap as of the most recent callback
     int gap = dsp_write_pos - dsp_read_pos;
@@ -250,10 +250,10 @@ void Audio::tick()
     while (gap + bytes_written > dsp_buffer_bytes) 
     {
         // then we allow the callback to run..
-        SDL_UnlockAudio();
+        SDL_UnlockAudioDevice(dev);
         // and delay until it runs and allows space.
         SDL_Delay(1);
-        SDL_LockAudio();
+        SDL_LockAudioDevice(dev);
         //printf("sound buffer overflow:%d %d\n",gap, dsp_buffer_bytes);
         gap = dsp_write_pos - dsp_read_pos;
     }
@@ -282,7 +282,7 @@ void Audio::tick()
         dsp_write_pos -= dsp_buffer_bytes;
         dsp_read_pos -= dsp_buffer_bytes;
     }
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(dev);
 }
 
 // Adjust the speed of the emulator, based on audio streaming performance.
@@ -331,9 +331,9 @@ void Audio::load_wav(const char* filename)
     if (sound_enabled)
     {
         pause_audio();
-        SDL_LockAudio();
+        SDL_LockAudioDevice(dev);
         clear_wav();
-        SDL_UnlockAudio();
+        SDL_UnlockAudioDevice(dev);
 
         // Load Wav File
         SDL_AudioSpec wave;
@@ -367,23 +367,23 @@ void Audio::load_wav(const char* filename)
             SDL_FreeWAV(data);
             delete[] data_vol;
 
-            SDL_LockAudio();
+            SDL_LockAudioDevice(dev);
             wavfile.data = (int16_t*) cvt.buf;
             wavfile.length = cvt.len_cvt / 2;
             wavfile.pos = 0;
             wavfile.loaded = 1;
-            SDL_UnlockAudio();
+            SDL_UnlockAudioDevice(dev);
         }
         // No Conversion Needed
         else
         {
             SDL_FreeWAV(data);
-            SDL_LockAudio();
+            SDL_LockAudioDevice(dev);
             wavfile.data = (int16_t*) data_vol;
             wavfile.length = length / 2;
             wavfile.pos = 0;
             wavfile.loaded = 2;
-            SDL_UnlockAudio();
+            SDL_UnlockAudioDevice(dev);
         }
 
         resume_audio();
